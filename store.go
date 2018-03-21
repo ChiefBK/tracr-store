@@ -5,6 +5,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 	"tracr-daemon/exchanges"
 	"time"
+	log "github.com/inconshreveable/log15"
 )
 
 type Store interface {
@@ -37,6 +38,10 @@ type Store interface {
 
 func NewStore() (store Store, err error) {
 	store, err = newMgoStore()
+
+	if err != nil {
+		log.Error("Error creating Mgo Store", "module", "store", "error", err)
+	}
 
 	return
 }

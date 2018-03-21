@@ -8,6 +8,7 @@ import (
 	"tracr-daemon/exchanges"
 	"time"
 	"tracr-daemon/keys"
+	log "github.com/inconshreveable/log15"
 )
 
 type MgoStore struct {
@@ -37,6 +38,7 @@ func (self *MgoStore) InsertChartData(exchange, pair string, interal time.Durati
 }
 
 func (self *MgoStore) ReplaceChartData(exchange, pair string, interval time.Duration, candles []exchanges.Candle) {
+	log.Debug("replacing chart data", "module", "store", "exchange", exchange, "pair", pair, "interval", interval, "numOfCandles", len(candles))
 	name := keys.BuildChartDataKey(exchange, pair, interval)
 	self.EmptyCollection(name)
 	self.InsertChartData(exchange, pair, interval, candles)
